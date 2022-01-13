@@ -8,3 +8,7 @@ body {
     grid-template-columns: 50px 50px 50px;
     grid-template-rows: 50px 50px 50px;
 }
+
+.container .piece {
+    border: 2px solid;
+}

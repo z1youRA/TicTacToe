@@ -1,11 +1,17 @@
 const Gameboard = (() => {
-    let gameboard = ['X','X','X','X','X','X',"O","O","O"];
-    return {gameboard, };
+    let gameboard = [];
+    for (let i = 0; i < 9; i++) {
+        gameboard[i] = '';
+    }
+    return {gameboard};
 } )();
 
 const Player = (number, name, type) => {
     const placeChecker = (position) => {
-        Gameboard.gameboard[position] = type;
+        if(Gameboard.gameboard[position] === ''){ // check if the block is empty.
+            Gameboard.gameboard[position] = type;
+            game.nextTurn();
+        }
         displayController.refreshBoard()
     }
     return {number, name, type, placeChecker};
@@ -17,32 +23,39 @@ const player2 = Player(2, 'Peter', "O");
 const displayController = (() => {
     const container = document.querySelector('.container');
     const refreshBoard = () => {
+        while(container.hasChildNodes()) {
+            container.removeChild(container.firstChild);
+        }
         Gameboard.gameboard.forEach((piece, index) => {
             const block = document.createElement('div');
-            block.setAttribute('data-key', `${index}`);
+            block.classList.add("piece");
+            block.setAttribute('data-key', `${index}`); // locate the position of checkers.
             block.addEventListener('click', (e) => {
-                if (game.turn === 1) {
+                if (game.getTurn() % 2 === 1) {
                     player1.placeChecker(e.target.getAttribute('data-key'));
                 }
-                else if(game.turn === 2) {
+                else if(game.getTurn() % 2 === 0) {
                     player2.placeChecker(e.target.getAttribute('data-key'));
                 }
             })
             block.textContent = piece;
-            block.classList.add("piece");
             container.appendChild(block);
         })
     }
     refreshBoard();
-
     return {refreshBoard};
 })();
 
 const game = (() => {
-
     let turn = 1;
+    const getTurn = () => turn;
+    const nextTurn = () => {
+        turn++;
+    }
+    const checkStatus = () => {
 
-    return {turn};
+    }
+    return {getTurn, nextTurn};
 })();
 
 
