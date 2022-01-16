@@ -8,12 +8,22 @@
         <link rel='stylesheet' href='styles.css'>
     </head>
     <body>
-        <h1>TIC TAC TOE</h1>
-        <div class='info'>
-            <input placeholder="Player1's name" id="P1-name">
-            <input placeholder="Player2's name" id="P2-name">
+        <div class='game'> 
+            <h1>TIC TAC TOE</h1>
+            <div class='info'>
+                <input placeholder="Player1's name" id="P1-name">
+                <input placeholder="Player2's name" id="P2-name">
+            </div>
+            <button class="start">Start</button>
+            <div class='container'></div>
         </div>
-        <button class="start">Start</button>
-        <div class='container'></div>
+        <div class='popup'>
+            <div class='header'>
+                <button class='close-button'>&times;</button>
+            </div>
+            <div class='text'>Lorem, ipsum dolor.</div>
+            <button class='restart'>Restart</button>
+        </div>
+        <div id='overlay'></div>
     <script src='script.js'></script>
 </html>
