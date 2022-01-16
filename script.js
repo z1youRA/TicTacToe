@@ -18,10 +18,6 @@ const Player = (number, name, type) => {
     return {number, name, type, placeChecker};
 }
 
-
-
-
-
 const game = (() => {
     let turn = 1;
     let player1 = Player(1, 'Player 1', 'X');
@@ -65,8 +61,6 @@ const game = (() => {
         return 0; // Without this _checkDia will return '0' instead of number 0;
     }
 
-
-
     const start = () => {
         let p1Name = document.getElementById('P1-name').value;
         let p2Name = document.getElementById('P2-name').value;
@@ -76,7 +70,7 @@ const game = (() => {
             p2Name = 'Player 2';
         game.player1.name = p1Name;
         game.player2.name = p2Name;
-        displayController.refreshBoard();
+        displayController.cleanBoard();
     }
 
     const getTurn = () => turn;
@@ -131,7 +125,6 @@ const displayController = (() => {
     restartButton.addEventListener('click', () => {
         popupBox.classList.remove('active');
         overlay.classList.remove('active');
-        displayController.cleanBoard();
         game.start();
     });
 
