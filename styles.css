@@ -1,14 +1,32 @@
+:root {
+    --background-color: #14bdac
+    --border-color:
+}
+
 body {
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .container {
-    text-align: center;
     display:grid;
-    grid-template-columns: 50px 50px 50px;
-    grid-template-rows: 50px 50px 50px;
+    grid-template-columns: 100px 100px 100px;
+    grid-template-rows: 100px 100px 100px;
 }
 
 .container .piece {
     border: 2px solid;
+}
+
+.info input {
+    margin: 15px 10px 20px;
+    height: 20px;
+}
+
+button {
+    height: 30px;
+    width: 80px;
+    margin-bottom: 30px;
 }

@@ -10,16 +10,15 @@ const Player = (number, name, type) => {
     const placeChecker = (position) => {
         if(Gameboard.gameboard[position] === ''){ // check if the block is empty.
             Gameboard.gameboard[position] = type;
+            displayController.refreshBoard();
             game.checkStatus(position);
             game.nextTurn();
         }
-        displayController.refreshBoard()
     }
     return {number, name, type, placeChecker};
 }
 
-const player1 = Player(1, 'Mike', 'X');
-const player2 = Player(2, 'Peter', "O");
+
 
 const displayController = (() => {
     const container = document.querySelector('.container');
@@ -33,22 +32,30 @@ const displayController = (() => {
             block.setAttribute('data-key', `${index}`); // locate the position of checkers.
             block.addEventListener('click', (e) => {
                 if (game.getTurn() % 2 === 1) {
-                    player1.placeChecker(parseInt(e.target.getAttribute('data-key')));
+                    game.player1.placeChecker(parseInt(e.target.getAttribute('data-key')));
                 }
                 else if(game.getTurn() % 2 === 0) {
-                    player2.placeChecker(parseInt(e.target.getAttribute('data-key')));
+                    game.player2.placeChecker(parseInt(e.target.getAttribute('data-key')));
                 }
             })
             block.textContent = piece;
             container.appendChild(block);
         })
     }
-    refreshBoard();
     return {refreshBoard};
 })();
 
 const game = (() => {
     let turn = 1;
+    let p1Name = document.getElementById('P1-name').value;
+    let p2Name = document.getElementById('P2-name').value;
+    if(p1Name === '')
+        p1Name = 'Player 1';
+    if(p2Name === '')
+        p2Name = 'Player 2';
+    const player1 = Player(1, p1Name, 'X');
+    const player2 = Player(2, p2Name, "O");
+
     const _checkRow = (row) => {
         for(let i = row * 3; i < (row + 1) * 3 - 1; i++) {
             if(Gameboard.gameboard[i] == '') {
@@ -86,6 +93,11 @@ const game = (() => {
         }
         return 0; // Without this _checkDia will return '0' instead of number 0;
     }
+    const _start = () => {
+        displayController.refreshBoard();
+    }
+    const startButton = document.querySelector('.start');
+    startButton.addEventListener('click', _start);
     const getTurn = () => turn;
     const nextTurn = () => {
         turn++;
@@ -98,10 +110,13 @@ const game = (() => {
         flag += _checkCol(column);
         flag += _checkDia(position);
         if(flag !== 0) {
-            alert('win')
+            alert('win');
+        }
+        if(game.getTurn() === 9) {
+            alert('tie');
         }
     }
-    return {getTurn, nextTurn, checkStatus};
+    return {getTurn, nextTurn, checkStatus, player1, player2};
 })();
 
 
