@@ -64,6 +64,9 @@ const game = (() => {
         }
         return 0; // Without this _checkDia will return '0' instead of number 0;
     }
+
+
+
     const start = () => {
         let p1Name = document.getElementById('P1-name').value;
         let p2Name = document.getElementById('P2-name').value;
@@ -98,9 +101,11 @@ const game = (() => {
         flag += _checkDia(position);
         if(flag !== 0) {
             displayController.popMessage(`${player1.name} WON!!!`);
+            displayController.endGame();
         }
         if(game.getTurn() === 9) {
             displayController.popMessage('TIE');
+            displayController.endGame();
         }
     }
 
@@ -130,6 +135,14 @@ const displayController = (() => {
         game.start();
     });
 
+    const addEvent = (e) => {
+            if (game.getTurn() % 2 === 1) {
+                game.player1.placeChecker(parseInt(e.target.getAttribute('data-key')));
+            }
+            else if(game.getTurn() % 2 === 0) {
+                game.player2.placeChecker(parseInt(e.target.getAttribute('data-key')));
+            }
+        }
     const popMessage = (str) => {
         popupText.textContent = str;
         popupBox.classList.add('active');
@@ -152,18 +165,19 @@ const displayController = (() => {
             const block = document.createElement('div');
             block.classList.add("piece");
             block.setAttribute('data-key', `${index}`); // locate the position of checkers.
-            block.addEventListener('click', (e) => {
-                if (game.getTurn() % 2 === 1) {
-                    game.player1.placeChecker(parseInt(e.target.getAttribute('data-key')));
-                }
-                else if(game.getTurn() % 2 === 0) {
-                    game.player2.placeChecker(parseInt(e.target.getAttribute('data-key')));
-                }
-            })
+            block.addEventListener('click', addEvent);
             block.textContent = piece;
             container.appendChild(block);
         })
     }
-    return {refreshBoard, cleanBoard, popMessage};
+
+    const endGame = () => {
+        blocks = document.querySelectorAll('.piece');
+        blocks.forEach((block) => {
+            block.removeEventListener('click', addEvent);
+        });
+    }
+
+    return {refreshBoard, cleanBoard, popMessage, addEvent, endGame};
 })();
 
